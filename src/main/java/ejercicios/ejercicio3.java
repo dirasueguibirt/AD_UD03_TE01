@@ -48,15 +48,14 @@ public class ejercicio3 {
 			rs = s.executeQuery("SELECT nombre from asistentes where dni ='" + cambioDNI + "';");
 			//si existe el DNI, seguimos con el proceso, si no, insertamos en la tabla de asistentes, pidiendo el DNI.
 			if (rs.next()) {
-				System.out.println("Estás realizando la reserva para: " + rs.getString("nombre"));
 				nombre = rs.getString("nombre");
 			} else {
-				
+				System.out.println("No se encontró un asistente con el DNI proporcionado.");
 				System.out.println("Introduce el nombre para realizar la reserva: ");
 				nombre = teclado.nextLine();
 				s.executeUpdate("INSERT INTO asistentes (dni,nombre) VALUES ('" + cambioDNI + "', '" + nombre+");");
 			}
-			
+			System.out.println("Estás realizando la reserva para: " + rs.getString("nombre"));
 			//seguimos con el programa. Listando los eventos disponibles y su capacidad.
 			System.out.println("Lista de eventos:");
 			
