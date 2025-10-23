@@ -74,7 +74,6 @@ public class ejercicio3 {
 			//verificamos que quedan plazas disponibles.
 			rs = s.executeQuery("SELECT nombre_evento from eventos where id_evento =" + idevento + ";");
 			while (rs.next()) {
-				System.out.println("Evento: " + rs.getString(1));
 				rs =  s.executeQuery("SELECT u.capacidad-count(a.dni) from eventos e "
 						+ " left join ubicaciones u on e.id_ubicacion=u.id_ubicacion "
 						+ "left join asistentes_eventos a on a.id_evento=e.id_evento "
