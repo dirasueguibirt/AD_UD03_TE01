@@ -53,10 +53,9 @@ public class ejercicio3 {
 				System.out.println("No se encontró un asistente con el DNI proporcionado.");
 				System.out.println("Introduce el nombre para realizar la reserva: ");
 				nombre = teclado.nextLine();
-				s.executeUpdate("INSERT INTO asistentes (dni,nombre) VALUES ('" + cambioDNI + "', '" + nombre+");");
+				s.executeUpdate("INSERT INTO asistentes (dni,nombre) VALUES ('" + cambioDNI + "', '" + nombre+"');");
 			}
-			System.out.println("Estás realizando la reserva para: " + rs.getString("nombre"));
-			//seguimos con el programa. Listando los eventos disponibles y su capacidad.
+			System.out.println("Estás realizando la reserva para: " + nombre);
 			System.out.println("Lista de eventos:");
 			
 			rs = s.executeQuery("SELECT e.id_evento, e.nombre_evento, u.capacidad-count(a.dni) from eventos e "
@@ -70,29 +69,30 @@ public class ejercicio3 {
 			//damos opcion a elegir el evento.
 			System.out.println("Elige el número del evento al que quiere asistir: ");
 			idevento = teclado.nextInt();
+			rs.close();
 			
 			//verificamos que quedan plazas disponibles.
-			rs = s.executeQuery("SELECT nombre_evento from eventos where id_evento =" + idevento + ";");
-			while (rs.next()) {
-				rs =  s.executeQuery("SELECT u.capacidad-count(a.dni) from eventos e "
-						+ " left join ubicaciones u on e.id_ubicacion=u.id_ubicacion "
-						+ "left join asistentes_eventos a on a.id_evento=e.id_evento "
-						+ "where e.id_evento =" + idevento
-						+ " group by e.id_evento=" + idevento + ";");
-				if(rs.next() ) {
-					int capacidad = rs.getInt(1);
-					//Si no hay capacidad disponible, mostramos error, si no, inscribimos.
-					if (capacidad < 1) {
-						System.out.println("No se puede inscribir en el evento por falta de capacidad.");
-					} else {
-						s.executeUpdate("INSERT INTO asistentes_eventos (dni,id_evento) VALUES ('" + cambioDNI + "', '" + idevento+");");
-						System.out.println(nombre + " ha sido registrado para el evento seleccionado.");
-					}
-					
+			//rs = s.executeQuery("SELECT nombre_evento from eventos where id_evento =" + idevento + ";");
+			//while (rs.next()) {
+			rs =  s.executeQuery("SELECT u.capacidad-count(a.dni) from eventos e "
+					+ " left join ubicaciones u on e.id_ubicacion=u.id_ubicacion "
+					+ "left join asistentes_eventos a on a.id_evento=e.id_evento "
+					+ "where e.id_evento =" + idevento
+					+ " group by e.id_evento=" + idevento + ";");
+			if(rs.next() ) {
+				int capacidad = rs.getInt(1);
+				//Si no hay capacidad disponible, mostramos error, si no, inscribimos.
+				if (capacidad < 1) {
+					System.out.println("No se puede inscribir en el evento por falta de capacidad.");
+				} else {
+					s.executeUpdate("INSERT INTO asistentes_eventos (dni,id_evento) VALUES ('" + cambioDNI + "', " + idevento+");");
+					System.out.println(nombre + " ha sido registrado para el evento seleccionado.");
 				}
 				
-				
 			}
+				
+				
+			//}
 			
 			teclado.close();
 			
@@ -103,9 +103,9 @@ public class ejercicio3 {
 		}
 		finally {
 		        try {
-		        	
+		        	if(s != null) s.close();
 		            if(rs != null) rs.close();
-		            if(s != null) s.close();
+		            
 		            if(c != null) c.close();
 		            //System.out.println("Conexión cerrada.");
 		        } catch (SQLException ex) {

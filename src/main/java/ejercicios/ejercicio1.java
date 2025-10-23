@@ -43,8 +43,6 @@ public class ejercicio1 {
 			while (rs.next()) {
 				String formatoresultado = "%-30s | %-11s | %-33s | %-30s\n";
 				System.out.printf(formatoresultado, rs.getString("nombre_evento"),rs.getString("asistentes"),rs.getString("nombre"),rs.getString("direccion"));
-				//System.out.println("APELLIDOS: " + rs.getString("APELLIDOS"));
-				//System.out.println("CP: " + rs.getString("CP"));
 				
 			}
 		} catch (SQLException e) {

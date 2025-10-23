@@ -31,18 +31,12 @@ public class ejercicio2 {
 		
 		try {
 			c = DriverManager.getConnection(urlConnection, user, pwd);
-			//System.out.println("Conexion realizada.");
 			s= c.createStatement();
 			Scanner teclado = new Scanner(System.in);
 			System.out.println("Introduce el DNI del asistente:");
 			String cambioDNI = teclado.nextLine();
 			rs = s.executeQuery("SELECT nombre from asistentes where dni ='" + cambioDNI + "';");
 			
-			//int i = 1;
-			//String formatoEncabezado = "%-30s | %-11s | %-33s | %-30s\n";
-			//System.out.printf(formatoEncabezado, "Evento", "Asistentes", "Ubicación", "Dirección");
-			//System.out.println("Evento" + "\t\t\t\t" + "| Asistentes"+ "\t\t" + "| Ubicación" + "\t\t" + "| Dirección");
-			//System.out.println("------------------------------------------------------------------------------------------------");
 			while (rs.next()) {
 				System.out.println("Nombre actual: : " + rs.getString("nombre"));				
 			}
